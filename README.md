@@ -10,9 +10,9 @@ Clear documentation of API endpoints and their usage.
 Implementation of basic security measures (like input validation).
 
 /////////////////////////////////////////////////////////////////////////////
-API Documentation
+# API Documentation
 
-authorization Routes
+## authorization Routes
 
 POST /api/v1/auth/register - Registers a new user and authenticate.
 Input : {email,name,password}
@@ -27,7 +27,7 @@ Output : Returns a JSON object containing the registered user's data (i.e, name,
 GET /api/v1/auth/logout
 Output : { "msg" : "user logged out"}
 
-User Routes
+# User Routes
 
 GET /api/v1/user
 Output : Array of user related objects only when user with role=admin is authenticated.
@@ -44,7 +44,7 @@ PATCH /api/v1/user/updateUserPassword
 Input : {oldPassword,newPassword}
 Output : updated User Details
 
-Book Routes
+# Book Routes
 
 GET /api/v1/book?publishedDate={}&author={}
 Output : An array of books that matches the search parameters. If no parameter is provided it returns all books.
