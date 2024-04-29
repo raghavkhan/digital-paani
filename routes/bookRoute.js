@@ -5,11 +5,12 @@ const {
   updateBook,
   deleteBook,
 } = require("../controllers/bookController");
+const { authenticateUser, authorizePermissions } = require("../middleware/authentication");
 const router = express.Router();
 
 router.get("/", getBooks);
-router.post("/", createBook);
-router.put("/", updateBook);
-router.delete("/", deleteBook);
+router.post("/",[authenticateUser,authorizePermissions("admin")], createBook);
+router.patch("/:id",[authenticateUser,authorizePermissions("admin")], updateBook);
+router.delete("/:id",[authenticateUser,authorizePermissions("admin")], deleteBook);
 
 module.exports = router;
