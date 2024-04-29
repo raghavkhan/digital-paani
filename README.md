@@ -2,40 +2,66 @@
 
 Please develop a simple book management API using Node JS. The API
 should offer these functionalities:
-    User authentication.
-    CRUD operations for managing book entries (e.g., title, author,
+User authentication.
+CRUD operations for managing book entries (e.g., title, author,
 publication year).
-    Filtering books by author or publication year.
-    Clear documentation of API endpoints and their usage.
-    Implementation of basic security measures (like input validation).
+Filtering books by author or publication year.
+Clear documentation of API endpoints and their usage.
+Implementation of basic security measures (like input validation).
 
 /////////////////////////////////////////////////////////////////////////////
 API Documentation
-POST /api/register - Registers a new user with the given username and password. Returns a JSON object containing the registered user's data
-POST /api/auth - Authenticate user with username and password. Returns JSON web token to be used in subsequent requests.
 
-POST /api/auth - Authenticate user. Returns token if successful.    
-{username: "string", password: "string"}  
+authorization Routes
 
-GET /api/books - Get all books. Requires valid token.  
+POST /api/v1/auth/register - Registers a new user and authenticate.
+Input : {email,name,password}
+attaches JSON web token with cookies to be used in subsequent requests.
+Output : Returns a JSON object containing the registered user's data (i.e, name,userId,role)
 
-GET /api/books/:id - Get specific book by id. Requires valid token.  
+POST /api/v1/auth/login - Authenticate user.
+Input : {email, password}
+attaches JSON web token with cookies to be used in subsequent requests.
+Output : Returns a JSON object containing the registered user's data (i.e, name,userId,role)
 
-POST /api/books - Create new book. Requires valid token.  
-{title: "string", author: "string", publicationYear: "number"}  
+GET /api/v1/auth/logout
+Output : { "msg" : "user logged out"}
 
-PUT /api/books/:id - Update existing book. Requires valid token.  
-Same format as create.    
+User Routes
 
-DELETE /api/books/:id - Delete book with given id. Requires valid token.  
+GET /api/v1/user
+Output : Array of user related objects only when user with role=admin is authenticated.
 
-Filtering can be done through query parameters:  
-?author=John&year=1995  
+GET /api/v1/user/showMe - show current user which is authenticated.
 
-Security Measures implemented in this version are: 
-- Token based authentication via JSON Web Tokens.
-- Input data is validated against a schema to ensure it contains the required fields.
+GET /api/v1/user/:id - get single user ,only admin can access this route to get the user with id.
 
-To run the server, use npm start from the command line. To test the routes, you can use an application like Postman or cURL.
-To run the server, use `node index.js`. To test routes, use an HTTP client like Postman or cURL.
+PATCH /api/v1/user/updateUser
+Input : { name: userName, userId, role }
+Output : Updated User Details
 
+PATCH /api/v1/user/updateUserPassword  
+Input : {oldPassword,newPassword}
+Output : updated User Details
+
+Book Routes
+
+GET /api/v1/book?publishedDate={}&author={}
+Output : An array of books that matches the search parameters. If no parameter is provided it returns all books.
+
+POST /api/v1/book (only admin can access this route)
+Input : {title,author,publicationYear}
+Output : {title,author,publicationYear,createdAt,updatedAt}
+
+PATCH /api/v1/book/:id (only admin can access this route)
+Input : {title, author,publicationYear} 
+Output : {title, author, publicationYear} updated at
+
+DELETE /api/v1/book/:id (only admin can access this route)
+Output : {
+  "msg": "Success! book removed"
+}
+
+
+To run the server, use npm start from the command line. To test the routes, you can use an application like Postman or Thunder Client.
+To run the server, use `node index.js`.
